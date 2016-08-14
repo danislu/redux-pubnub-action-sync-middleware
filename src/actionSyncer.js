@@ -20,16 +20,8 @@ const receiver = actionIterator =>
 const both = actionIterator => actionSender =>
     store => receiverCombo(actionIterator)(store)(sender(actionSender)(store));
 
-const defaultFilter = action => {
-    if (action && action.meta) {
-        if (typeof action.meta.noSync === 'undefined') {
-            return true;
-        }
-        return action.meta.noSync;
-    }
-    
-    return true;
-};
+// eslint-disable-next-line
+const defaultFilter = action => true;
 
 export default function actionSyncMiddleware(inputOptions) {
     const options = Object.assign({}, {
