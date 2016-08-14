@@ -62,8 +62,6 @@ const pubnubConnection = (options) => {
 export default function pubnubActionSyncer(inputOptions) {
     const options = Object.assign({}, {
         mode: parse(window.location.search).syncMode,
-        publish_key: 'pub-c-118126b2-d33a-4207-91d1-e5565f8ea0a9',
-        subscribe_key: 'sub-c-ae2c7998-86d2-11e5-8e17-02ee2ddab7fe',
     }, inputOptions);
 
     const { publish_key, subscribe_key } = options;
