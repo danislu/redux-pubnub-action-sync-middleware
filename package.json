@@ -1,6 +1,6 @@
 {
   "name": "redux-pubnub-action-sync-middleware",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sync actions via pubnub",
   "main": "./dist/index.js",
   "keywords": [
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "guid": "0.0.12",
-    "query-string": "^4.2.2" 
+    "query-string": "^4.2.2"
   },
   "scripts": {
     "lint": "eslint src",
