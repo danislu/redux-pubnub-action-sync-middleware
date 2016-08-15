@@ -1,6 +1,6 @@
 {
   "name": "redux-pubnub-action-sync-middleware",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Sync actions via pubnub",
   "main": "./dist/index.js",
   "keywords": [
