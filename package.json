@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "guid": "0.0.12",
+    "pubnub": "^4.0.5",
     "query-string": "^4.2.2"
   },
   "scripts": {

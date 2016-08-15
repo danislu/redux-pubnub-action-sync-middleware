@@ -7,21 +7,29 @@ import { createStore, applyMiddleware } from 'redux';
 import createPubnubActionSyncerMiddleware from 'redux-pubnub-action-sync-middleware';
  
 const pubnubMiddleware = createPubnubActionSyncerMiddleware({
-    publish_key: 'pub-c-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    subscribe_key: 'sub-c-xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx',
+    publishKey: 'myPublishKey',
+    subscribeKey: 'mySubscribeKey',
 });
 const createStoreWithMiddleware = applyMiddleware(pubnubMiddleware)(createStore);
 ```
 
-```createPubnubActionSyncerMiddleware``` takes an object as parameter;
+```createPubnubActionSyncerMiddleware``` takes an object parameter as input.
 
-## The parameter object
+This is were to initialize the pubnub connection ([pubnub docs](https://www.pubnub.com/docs/javascript/api-reference-sdk-v4#init)) 
 
-### publish_key / subscribe_key
-API keys provided by [pubnub](www.pubnub.com).
+In addition this object can set additional values for controlling the action syncing;
 
 ### mode
 Possible values ```'sender'```, ```'receiver'``` or ```'both'``` (default)
+
+#### sender
+will only broadcast the actions taken with pubnub, but not apply any actions published by other instances.
+
+#### receiver
+will not broadcast actions taken in the instance, but will apply actions publiched by other instances.
+
+#### both
+will both broadcast and apply received actions. 
 
 #### default value
 ```js

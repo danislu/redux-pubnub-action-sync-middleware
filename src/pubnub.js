@@ -1,5 +1,7 @@
+import PubNub from 'pubnub';
 import Guid from 'guid';
 import { parse } from 'query-string';
+
 import actionSyncMiddleware from './actionSyncer';
 
 const channel = 'pubnub-action-syncer';
@@ -9,25 +11,31 @@ const pubnubConnection = (options) => {
     const subscribers = [];
 
     // eslint-disable-next-line
-    const pubnub = PUBNUB(options);
+    const pubnub = new PubNub(options);
+
+    const handleMessage = (message) => {
+        const { message: { source, action } } = message;
+
+        if (source === guid) {
+            return;
+        }
+
+        subscribers.forEach(({ callback }) => {
+            callback(action);
+        }, this);
+    };
+
+    pubnub.addListener({
+        status: (statusEvent) => {
+            if (statusEvent.category === 'PNConnectedCategory') {
+                console.log(`Connected as ${guid}`);
+            }
+        },
+        message: handleMessage,
+    });
 
     pubnub.subscribe({
-        channel,
-        message: (msg, env, ch) => {
-            const { source, action } = msg;
-
-            if (source === guid || ch !== channel) {
-                return;
-            }
-
-            subscribers.forEach(({ callback }) => {
-                callback(action);
-            }, this);
-        },
-        connect: () => {
-            // eslint-disable-next-line
-            console.log(`Connected as ${guid}`);
-        },
+        channels: [channel],
     });
 
     const subscribe = (callback) => {
@@ -64,8 +72,7 @@ export default function pubnubActionSyncer(inputOptions) {
         mode: parse(window.location.search).syncMode,
     }, inputOptions);
 
-    const { publish_key, subscribe_key } = options;
-    const { subscribe, publish } = pubnubConnection({ publish_key, subscribe_key });
+    const { subscribe, publish } = pubnubConnection(options);
 
     options.onActionRecived = subscribe;
     options.sendAction = publish;
